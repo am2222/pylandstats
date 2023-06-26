@@ -1,7 +1,6 @@
 """Spatio-temporal analysis."""
 import functools
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -347,44 +346,7 @@ class SpatioTemporalBufferAnalysis(SpatioTemporalAnalysis):
         """
         # TODO: refactor this method so that it uses `class_metrics_df` and
         # `landscape_metrics_df` properties?
-        if ax is None:
-            if subplots_kws is None:
-                subplots_kws = {}
-            fig, ax = plt.subplots(**subplots_kws)
-
-        if plot_kws is None:
-            plot_kws = {}
-
-        if "label" not in plot_kws:
-            # avoid alias/refrence issues
-            _plot_kws = plot_kws.copy()
-            for buffer_dist, sta in zip(self.buffer_dists, self.stas):
-                _plot_kws["label"] = buffer_dist
-                ax = sta.plot_metric(
-                    metric,
-                    class_val=class_val,
-                    ax=ax,
-                    metric_legend=metric_legend,
-                    metric_label=metric_label,
-                    fmt=fmt,
-                    plot_kws=_plot_kws,
-                )
-        else:
-            for sta in self.stas:
-                ax = sta.plot_metric(
-                    metric,
-                    class_val=class_val,
-                    ax=ax,
-                    metric_legend=metric_legend,
-                    metric_label=metric_label,
-                    fmt=fmt,
-                    plot_kws=plot_kws,
-                )
-
-        if buffer_dist_legend:
-            ax.legend()
-
-        return ax
+        pass
 
     def plot_landscapes(
         self,
@@ -420,40 +382,4 @@ class SpatioTemporalBufferAnalysis(SpatioTemporalAnalysis):
         dates = self.stas[0].dates
 
         # avoid alias/refrence issues
-        if subplots_kws is None:
-            _subplots_kws = {}
-        else:
-            _subplots_kws = subplots_kws.copy()
-        figsize = _subplots_kws.pop("figsize", None)
-        if figsize is None:
-            figwidth, figheight = plt.rcParams["figure.figsize"]
-            figsize = (
-                figwidth * len(self.buffer_dists),
-                figheight * len(dates),
-            )
-
-        fig, axes = plt.subplots(
-            len(self.buffer_dists), len(dates), figsize=figsize, **_subplots_kws
-        )
-
-        if show_kws is None:
-            show_kws = {}
-        flat_axes = axes.flat
-        for buffer_dist, sta in zip(self.buffer_dists, self.stas):
-            for date, landscape in zip(sta.dates, sta.landscapes):
-                ax = landscape.plot_landscape(
-                    cmap=cmap, ax=next(flat_axes), legend=legend, **show_kws
-                )
-
-        # labels in first row and column only
-        for date, ax in zip(dates, axes[0]):
-            ax.set_title(date)
-
-        for buffer_dist, ax in zip(self.buffer_dists, axes[:, 0]):
-            ax.set_ylabel(buffer_dist)
-
-        # adjust spacing between axes
-        if subplots_adjust_kws is not None:
-            fig.subplots_adjust(**subplots_adjust_kws)
-
-        return fig
+        pass
