@@ -302,70 +302,7 @@ class MultiLandscape(abc.ABC):
         # TODO: if we use seaborn in the future, we can use the pd.Series
         # directly, since its index corresponds to this SpatioTemporalAnalysis
         # dates
-        if metric_kws is None:
-            metric_kws = {}
-        if class_val is None:
-            try:
-                metric_values = [
-                    getattr(landscape, metric)(**metric_kws)
-                    for landscape in self.landscapes
-                ]
-            except AttributeError:
-                raise ValueError(
-                    "{metric} is not among {metrics}".format(
-                        metric=metric,
-                        metrics=pls_landscape.Landscape.CLASS_METRICS,
-                    )
-                )
-            except TypeError:
-                raise ValueError(
-                    "{metric} cannot be computed at the landscape level".format(
-                        metric=metric
-                    )
-                )
-        else:
-            try:
-                metric_values = [
-                    getattr(landscape, metric)(class_val=class_val, **metric_kws)
-                    for landscape in self.landscapes
-                ]
-            except AttributeError:
-                raise ValueError(
-                    "{metric} is not among {metrics}".format(
-                        metric=metric,
-                        metrics=pls_landscape.Landscape.LANDSCAPE_METRICS,
-                    )
-                )
-            except TypeError:
-                raise ValueError(
-                    "{metric} cannot be computed at the class level".format(
-                        metric=metric
-                    )
-                )
-
-        if ax is None:
-            if subplots_kws is None:
-                subplots_kws = {}
-            fig, ax = plt.subplots(**subplots_kws)
-
-        # for `SpatioTemporalAnalysis`, `attribute_values` will be `dates`;
-        # for `BufferAnalysis`, `attribute_values` will be `buffer_dists`
-        attribute_values = getattr(self, self.attribute_name)
-
-        if plot_kws is None:
-            plot_kws = {}
-
-        ax.plot(attribute_values, metric_values, fmt, **plot_kws)
-
-        if metric_legend:
-            if metric_label is None:
-                # get the metric label from the settings, otherwise use the
-                # metric method name, i.e., metric name in camel-case
-                metric_label = settings.metric_label_dict.get(metric, metric)
-
-            ax.set_ylabel(metric_label)
-
-        return ax
+        pass
 
     def plot_landscapes(
         self,
