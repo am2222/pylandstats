@@ -5,8 +5,6 @@ import functools
 import platform
 import warnings
 
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rasterio as rio
@@ -2956,41 +2954,4 @@ class Landscape:
         ax : matplotlib.axes.Axes
             Returns the `Axes` object with the plot drawn onto it.
         """
-        if cmap is None:
-            cmap = plt.rcParams["image.cmap"]
-
-        if isinstance(cmap, str):
-            cmap = plt.get_cmap(cmap)
-
-        if ax is None:
-            fig, ax = plt.subplots(figsize=figsize)
-            ax.set_aspect("equal")
-
-        ax = plot.show(
-            np.where(
-                self.landscape_arr != self.nodata,
-                self.landscape_arr,
-                self.nodata,
-            ),
-            ax=ax,
-            transform=self.transform,
-            cmap=cmap,
-            **show_kws,
-        )
-
-        if legend:
-            im = ax.get_images()[0]
-            # get the colors of the values, according to the
-            # colormap used by imshow
-            colors = [im.cmap(im.norm(class_val)) for class_val in self.classes]
-            # create a patch (proxy artist) for every color
-            patches = [
-                mpatches.Patch(color=colors[i], label=f"{class_val}")
-                for i, class_val in enumerate(self.classes)
-            ]
-            # put those patched as legend-handles into the legend
-            if legend_kws is None:
-                legend_kws = {}
-            ax.legend(handles=patches, **legend_kws)
-
-        return ax
+        pass
