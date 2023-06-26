@@ -1,7 +1,6 @@
 """Zonal analysis."""
 import warnings
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rasterio as rio
@@ -769,28 +768,4 @@ class ZonalGridAnalysis(ZonalAnalysis):
         ax : matplotlib.axes.Axes
             Returns the `Axes` object with the plot drawn onto it.
         """
-        if cmap is None:
-            cmap = plt.rcParams["image.cmap"]
-
-        if isinstance(cmap, str):
-            cmap = plt.get_cmap(cmap)
-
-        if ax is None:
-            fig, ax = plt.subplots(figsize=figsize)
-            ax.set_aspect("equal")
-
-        if show_kws is None:
-            show_kws = {}
-
-        zone_arr = np.full_like(self.data_zones, np.nan, dtype=np.float32)
-        zone_arr[self.data_zones] = np.random.random(np.sum(self.data_zones))
-
-        ax.imshow(
-            zone_arr.reshape(
-                self.landscape_meta["height"], self.landscape_meta["width"]
-            ),
-            cmap=cmap,
-            **show_kws,
-        )
-
-        return ax
+        pass
